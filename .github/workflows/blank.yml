@@ -37,6 +37,7 @@ jobs:
         ECR_REPOSITORY: testedu
         IMAGE_TAG: ${{ github.sha }}
       run: |
+        ls -lrt
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
