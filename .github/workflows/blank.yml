@@ -43,7 +43,16 @@ jobs:
         ECR_REPOSITORY: testedu
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        ls -lrt
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        
+    - name: Build, tag, and push image to Amazon ECR for tags
+      if: ${{ github.event.release.tag_name }} == ''
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: testedu
+        IMAGE_TAG: ${{ github.event.release.tag_name }}
+      run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
